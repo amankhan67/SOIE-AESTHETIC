@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Appointment -  SOIE AESTHETICA </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #c9a571;
+            --secondary-color: #2c2c2c;
+            --accent-color: #8b6f47;
+            --light-bg: #f8f5f0;
+            --text-dark: #333;
+            --text-light: #666;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Liquid Background Animation */
+        .liquid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .liquid-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .blob1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .blob2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .blob3 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, var(--primary-color), #d4b583);
+            top: 50%;
+            right: -100px;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(100px, -100px) scale(1.1);
+            }
+            66% {
+                transform: translate(-100px, 100px) scale(0.9);
+            }
+        }
+
+        .booking-container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(201, 165, 113, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .booking-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .required {
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem;
+            border: 2px solid rgba(201, 165, 113, 0.2);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            color: var(--text-dark);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 20px rgba(201, 165, 113, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .service-selection {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(201, 165, 113, 0.2);
+        }
+
+        .service-selection h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .service-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .service-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .service-option:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(5px);
+        }
+
+        .service-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .service-option label {
+            cursor: pointer;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .service-option:has(input:checked) {
+            background: rgba(201, 165, 113, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .time-slot {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(201, 165, 113, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .time-slot:hover {
+            background: rgba(201, 165, 113, 0.1);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .time-slot.selected {
+            background: rgba(201, 165, 113, 0.8);
+            border-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .submit-button {
+            background: rgba(201, 165, 113, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(201, 165, 113, 0.3);
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(201, 165, 113, 0.5);
+            background: rgba(201, 165, 113, 1);
+        }
+
+        .submit-button:active {
+            transform: translateY(-1px);
+        }
+
+        .booking-summary {
+            background: rgba(201, 165, 113, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(201, 165, 113, 0.3);
+            display: none;
+        }
+
+        .booking-summary.show {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .booking-summary h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(201, 165, 113, 0.2);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .booking-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .booking-header h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .service-options {
+                grid-template-columns: 1fr;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+        }
+
+        .success-message {
+            background: rgba(139, 195, 74, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(139, 195, 74, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .success-message h2 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .success-message p {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Liquid Background -->
+    <div class="liquid-bg">
+        <div class="liquid-blob blob1"></div>
+        <div class="liquid-blob blob2"></div>
+        <div class="liquid-blob blob3"></div>
+    </div>
+
+    <div class="booking-container">
+        <a href="#" class="back-link">← Back to Home</a>
+        
+        <div class="booking-header">
+            <div class="logo">SOIE AESTHETIC</div>
+            <h1>Book Your Appointment</h1>
+            <p>Schedule your journey to relaxation and rejuvenation</p>
+        </div>
+
+        <form class="booking-form" id="bookingForm">
+            <!-- Personal Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name <span class="required">*</span></label>
+                    <input type="text" name="firstName" required placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label>Last Name <span class="required">*</span></label>
+                    <input type="text" name="lastName" required placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" name="email" required placeholder="john.doe@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" name="phone" required placeholder="+1 (234) 567-8900">
+                </div>
+            </div>
+
+            <!-- Service Selection -->
+            <div class="service-selection">
+                <h3>Select Services <span class="required">*</span></h3>
+                <div class="service-options">
+                    <div class="service-option">
+                        <input type="checkbox" id="massage" name="services" value="Therapeutic Massage - $120">
+                        <label for="massage">Therapeutic Massage </label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="facial" name="services" value="Facial Treatment - $95">
+                        <label for="facial">Facial Treatment </label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="nails" name="services" value="Nail Care - $65">
+                        <label for="nails">Nail Care </label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="hair" name="services" value="Hair Styling - $85">
+                        <label for="hair">Hair Styling </label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="body" name="services" value="Body Treatment - $110">
+                        <label for="body">Body Treatment</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="wellness" name="services" value="Wellness Package - $250">
+                        <label for="wellness">Wellness Package</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date and Time -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Preferred Date <span class="required">*</span></label>
+                    <input type="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Therapist</label>
+                    <select name="therapist">
+                        <option value="">No Preference</option>
+                        <option value="Sarah Martinez">Sarah Martinez</option>
+                        <option value="Emily Chen">Emily Chen</option>
+                        <option value="Michael Roberts">Michael Roberts</option>
+                        <option value="Jessica Thompson">Jessica Thompson</option>
+                        <option value="David Park">David Park</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Select Time Slot <span class="required">*</span></label>
+                <div class="time-slots" id="timeSlots">
+                    <div class="time-slot" data-time="9:00 AM">9:00 AM</div>
+                    <div class="time-slot" data-time="10:00 AM">10:00 AM</div>
+                    <div class="time-slot" data-time="11:00 AM">11:00 AM</div>
+                    <div class="time-slot" data-time="12:00 PM">12:00 PM</div>
+                    <div class="time-slot" data-time="1:00 PM">1:00 PM</div>
+                    <div class="time-slot" data-time="2:00 PM">2:00 PM</div>
+                    <div class="time-slot" data-time="3:00 PM">3:00 PM</div>
+                    <div class="time-slot" data-time="4:00 PM">4:00 PM</div>
+                    <div class="time-slot" data-time="5:00 PM">5:00 PM</div>
+                    <div class="time-slot" data-time="6:00 PM">6:00 PM</div>
+                </div>
+                <input type="hidden" name="time" id="selectedTime" required>
+            </div>
+
+            <!-- Special Requests -->
+            <div class="form-group">
+                <label>Special Requests or Notes</label>
+                <textarea name="notes" placeholder="Any allergies, preferences, or special requirements we should know about?"></textarea>
+            </div>
+
+            <!-- Booking Summary -->
+            <div class="booking-summary" id="bookingSummary">
+                <h3>Booking Summary</h3>
+                <div id="summaryContent"></div>
+            </div>
+
+            <button type="submit" class="submit-button">Confirm Booking</button>
+        </form>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <h2>✨ Booking Confirmed!</h2>
+            <p>Thank you for choosing Serenity Spa & Beauty. We've sent a confirmation email to your address.</p>
+            <p>We look forward to welcoming you and providing you with an exceptional spa experience.</p>
+            <button class="submit-button" onclick="window.location.reload()">Book Another Appointment</button>
+        </div>
+    </div>
+
+    <script>
+        // Time slot selection
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const selectedTimeInput = document.getElementById('selectedTime');
+
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedTimeInput.value = this.dataset.time;
+                updateSummary();
+            });
+        });
+
+        // Service selection listener
+        const serviceCheckboxes = document.querySelectorAll('input[name="services"]');
+        serviceCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSummary);
+        });
+
+        // Date selection listener
+        const dateInput = document.querySelector('input[name="date"]');
+        dateInput.addEventListener('change', updateSummary);
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        // Update booking summary
+        function updateSummary() {
+            const selectedServices = Array.from(serviceCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            
+            const selectedDate = dateInput.value;
+            const selectedTime = selectedTimeInput.value;
+
+            if (selectedServices.length > 0 || selectedDate || selectedTime) {
+                const summary = document.getElementById('bookingSummary');
+                const summaryContent = document.getElementById('summaryContent');
+                
+                let total = 0;
+                let html = '';
+
+                if (selectedServices.length > 0) {
+                    html += '<div class="summary-item"><strong>Selected Services:</strong></div>';
+                    selectedServices.forEach(service => {
+                        const price = parseFloat(service.match(/\$(\d+)/)[1]);
+                        total += price;
+                        html += `<div class="summary-item"><span>${service.split(' - ')[0]}</span><span>${service.split(' - ')[1]}</span></div>`;
+                    });
+                }
+
+                if (selectedDate) {
+                    const formattedDate = new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    html += `<div class="summary-item"><span>Date:</span><span>${formattedDate}</span></div>`;
+                }
+
+                if (selectedTime) {
+                    html += `<div class="summary-item"><span>Time:</span><span>${selectedTime}</span></div>`;
+                }
+
+                if (total > 0) {
+                    html += `<div class="summary-item"><span>Total:</span><span>$${total}</span></div>`;
+                }
+
+                summaryContent.innerHTML = html;
+                summary.classList.add('show');
+            }
+        }
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate that at least one service is selected
+            const selectedServices = Array.from(serviceCheckboxes).filter(cb => cb.checked);
+            if (selectedServices.length === 0) {
+                alert('Please select at least one service.');
+                return;
+            }
+
+            // Validate time slot is selected
+            if (!selectedTimeInput.value) {
+                alert('Please select a time slot.');
+                return;
+            }
+
+            // Hide form and show success message
+            this.style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth animations for form fields
+        const formInputs = document.querySelectorAll('input, select, textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.01)';
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
